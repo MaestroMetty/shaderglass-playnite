@@ -3,8 +3,8 @@ AddonId: ShaderGlass_b3ea67cd-a2e7-4f91-88c4-8486e31fc900
 Packages:
   - Version: 1.0.0
     RequiredApiVersion: 6.2.0
-    ReleaseDate: 2025-01-15
-    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/bin/shader-glass-playniteplugin-v1.0.0.pext
+    ReleaseDate: 2025-11-09
+    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/Release/shader-glass-playniteplugin-v1.0.0.pext
     Changelog:
       - Initial release
       - Automatically launches ShaderGlass with custom profiles when games with specific tags are started
@@ -12,4 +12,10 @@ Packages:
       - Support for fullscreen and windowed modes via tags
       - Paused mode support
       - Automatic cleanup when games are stopped
+  - Version: 1.0.1
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2025-11-09
+    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/Release/shader-glass-playniteplugin-v1.0.1.pext
+    Changelog:
+      - Minor changes to the plugin
 
