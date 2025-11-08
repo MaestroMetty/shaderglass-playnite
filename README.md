@@ -13,7 +13,7 @@ A Playnite plugin that automatically launches ShaderGlass with custom profiles w
 
 ## Installation
 
-You can download the plugin from the [releases page](https://github.com/yourusername/shaderglass-playnite-plugin/releases). There are two ways to install it:
+You can download the plugin from the [releases page](https://github.com/MaestroMetty/shaderglass-playnite/releases). There are two ways to install it:
 
 ### Using the *.pext file (Recommended):
 
