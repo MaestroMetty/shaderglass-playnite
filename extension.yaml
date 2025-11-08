@@ -1,0 +1,8 @@
+﻿Id: ShaderGlass_b3ea67cd-a2e7-4f91-88c4-8486e31fc900
+Name: Shader Glass
+Author: MaestroMetty
+Version: 1.0.0
+Module: ShaderGlass.dll
+Type: GenericPlugin
+Icon: Resources\icon.png
+Description: Automatically launches ShaderGlass with custom profiles when games with specific tags are started. Configure the ShaderGlass executable path and profiles directory in settings, then tag your games with [ShaderGlass] <profile-name> to enable automatic shader injection.
