@@ -2,7 +2,7 @@
 
 ![Shader Glass Plugin](screenshots/main.png)
 
-A Playnite plugin that automatically launches ShaderGlass with custom profiles when games with specific tags are started.
+A Playnite plugin that automatically launches [ShaderGlass](https://github.com/mausimus/ShaderGlass) with custom profiles when games with specific tags are started.
 
 ## Features
 
