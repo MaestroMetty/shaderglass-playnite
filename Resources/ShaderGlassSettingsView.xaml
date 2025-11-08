@@ -8,27 +8,27 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20">
             <!-- Executable Path -->
-            <TextBlock Text="{Binding ExecutablePath_Label}" FontWeight="Bold" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding ExecutablePath_Description}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassExecutablePathLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassExecutablePathDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
             <Grid Margin="0,0,0,15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Text="{Binding ExecutablePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0"/>
-                <Button Grid.Column="1" Content="{Binding BrowseButton_Label}" Click="BrowseExecutableButton_Click" Padding="10,5"/>
+                <Button Grid.Column="1" Content="{DynamicResource LOCShaderGlassBrowseButton}" Click="BrowseExecutableButton_Click" Padding="10,5"/>
             </Grid>
 
             <!-- Profiles Path -->
-            <TextBlock Text="{Binding ProfilesPath_Label}" FontWeight="Bold" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding ProfilesPath_Description}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassProfilesPathLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassProfilesPathDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Text="{Binding ProfilesPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0"/>
-                <Button Grid.Column="1" Content="{Binding BrowseButton_Label}" Click="BrowseProfilesButton_Click" Padding="10,5"/>
+                <Button Grid.Column="1" Content="{DynamicResource LOCShaderGlassBrowseButton}" Click="BrowseProfilesButton_Click" Padding="10,5"/>
             </Grid>
         </StackPanel>
     </ScrollViewer>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Playnite.SDK;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ namespace ShaderGlass
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*",
-                Title = "Select ShaderGlass executable"
+                Title = ResourceProvider.GetString("LOCShaderGlassSelectExecutableTitle")
             };
 
             if (!string.IsNullOrEmpty(settings.ExecutablePath) && File.Exists(settings.ExecutablePath))
@@ -44,11 +45,11 @@ namespace ShaderGlass
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Select Profiles Directory (you can type the path in the address bar)",
+                Title = ResourceProvider.GetString("LOCShaderGlassSelectProfilesTitle"),
                 CheckFileExists = false,
                 CheckPathExists = true,
                 ValidateNames = false,
-                FileName = "Select Folder"
+                FileName = ResourceProvider.GetString("LOCShaderGlassSelectFolder")
             };
 
             if (!string.IsNullOrEmpty(settings.ProfilesPath) && Directory.Exists(settings.ProfilesPath))

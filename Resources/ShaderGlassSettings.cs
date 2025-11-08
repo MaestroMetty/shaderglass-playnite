@@ -21,27 +21,12 @@ namespace ShaderGlass
             }
         }
 
-        [DontSerialize]
-        public string BrowseButton_Label { get; set; }
-
-        [DontSerialize]
-        public string ExecutablePath_Label { get; set; }
-
-        [DontSerialize]
-        public string ExecutablePath_Description { get; set; }
-
         private string executablePath = string.Empty;
         public string ExecutablePath 
         { 
             get { return executablePath; } 
             set { executablePath = value; NotifyPropertyChanged("ExecutablePath"); } 
         }
-
-        [DontSerialize]
-        public string ProfilesPath_Label { get; set; }
-
-        [DontSerialize]
-        public string ProfilesPath_Description { get; set; }
 
         private string profilesPath = string.Empty;
         public string ProfilesPath 
@@ -57,12 +42,6 @@ namespace ShaderGlass
 
         public ShaderGlassSettings(ShaderGlass plugin)
         {
-            BrowseButton_Label = "Browse...";
-            ExecutablePath_Label = "ShaderGlass Executable Path:";
-            ExecutablePath_Description = "Path to the ShaderGlass executable file (\\path\\to\\shaderglass\\ShaderGlass.exe)";
-            ProfilesPath_Label = "Profiles Directory Path:";
-            ProfilesPath_Description = "Path to the directory containing ShaderGlass profile files (.sgp files)";
-
             // Injecting your plugin instance is required for Save/Load method because Playnite saves data to a location based on what plugin requested the operation.
             this.plugin = plugin;
             Load();
@@ -115,24 +94,24 @@ namespace ShaderGlass
 
             if (string.IsNullOrWhiteSpace(ExecutablePath))
             {
-                errors.Add("ShaderGlass executable path is required.");
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassExecutablePathRequired"));
             }
             else if (!File.Exists(ExecutablePath))
             {
-                errors.Add("ShaderGlass executable path does not exist.");
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassExecutablePathNotExist"));
             }
             else if (!ExecutablePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
             {
-                errors.Add("ShaderGlass executable path must include the .exe file extension.");
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassExecutablePathMustBeExe"));
             }
 
             if (string.IsNullOrWhiteSpace(ProfilesPath))
             {
-                errors.Add("Profiles directory path is required.");
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassProfilesPathRequired"));
             }
             else if (!Directory.Exists(ProfilesPath))
             {
-                errors.Add("Profiles directory path does not exist.");
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassProfilesPathNotExist"));
             }
 
             return errors.Count == 0;
