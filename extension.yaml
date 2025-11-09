@@ -5,4 +5,7 @@ Version: 1.1.0
 Module: ShaderGlass.dll
 Type: GenericPlugin
 Icon: Resources\icon.png
+Links:
+  - Name: SourceCode
+    Url: https://github.com/MaestroMetty/shaderglass-playnite
 Description: Automatically launches ShaderGlass with custom profiles when games with specific tags are started. Configure the ShaderGlass executable path and profiles directory in settings, then tag your games with [ShaderGlass] <profile-name> to enable automatic shader injection.
