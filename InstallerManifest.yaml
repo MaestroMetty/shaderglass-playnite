@@ -1,15 +1,15 @@
 AddonId: ShaderGlass_b3ea67cd-a2e7-4f91-88c4-8486e31fc900
 
 Packages:
-#  - Version: 1.1.0
-#    RequiredApiVersion: 6.2.0
-#    ReleaseDate: 2025-11-09
-#    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/Releases/shader-glass-playniteplugin-v1.1.0.pext
-#    Changelog:
-#      - Added support for ignored profiles
-#      - Added support for refreshing profiles from Playnite menu
-#      - Automatically creates tags for each profile found in the profiles directory
-#      - Added Italian localization
+  - Version: 1.1.0
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2025-11-09
+    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/Releases/shader-glass-playniteplugin-v1.1.0.pext
+    Changelog:
+      - Added support for ignored profiles
+      - Added support for refreshing profiles from Playnite menu
+      - Automatically creates tags for each profile found in the profiles directory
+      - Added Italian localization
   - Version: 1.0.1
     RequiredApiVersion: 6.2.0
     ReleaseDate: 2025-11-09
