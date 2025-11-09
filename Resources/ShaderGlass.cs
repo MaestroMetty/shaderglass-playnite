@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -79,24 +78,22 @@ namespace ShaderGlass
                 {
                     // Extract content from tag
                     // Format: "[ShaderGlass] <profile-name>", "[ShaderGlass] NoFullscreen", or "[ShaderGlass] PausedMode"
-                    var match = Regex.Match(tag.Name, @"\[ShaderGlass\]\s*(.+)", RegexOptions.IgnoreCase);
-                    if (match.Success)
+                    // Since we already checked it starts with "[ShaderGlass]", just remove the prefix
+                    string content = tag.Name.Substring("[ShaderGlass] ".Length).Trim();
+                    
+                    if (content.Equals("NoFullscreen", StringComparison.OrdinalIgnoreCase))
                     {
-                        var content = match.Groups[1].Value.Trim();
-                        if (content.Equals("NoFullscreen", StringComparison.OrdinalIgnoreCase))
-                        {
-                            noFullscreen = true;
-                        }
-                        else if (content.Equals("PausedMode", StringComparison.OrdinalIgnoreCase))
-                        {
-                            pausedMode = true;
-                        }
-                        else if (string.IsNullOrWhiteSpace(profileName) &&!hasProfileSet)
-                        {
-                            // Use first profile name found (skip subsequent profile tags if user incorrectly sets multiple)
-                            profileName = content;
-                            hasProfileSet = true;
-                        }
+                        noFullscreen = true;
+                    }
+                    else if (content.Equals("PausedMode", StringComparison.OrdinalIgnoreCase))
+                    {
+                        pausedMode = true;
+                    }
+                    else if (string.IsNullOrWhiteSpace(profileName) &&!hasProfileSet)
+                    {
+                        // Use first profile name found (skip subsequent profile tags if user incorrectly sets multiple)
+                        profileName = content;
+                        hasProfileSet = true;
                     }
                 }
             }
@@ -194,9 +191,110 @@ namespace ShaderGlass
             // Add code to be executed when game is uninstalled.
         }
 
+        public void RefreshProfiles()
+        {
+            if (string.IsNullOrWhiteSpace(settings.ProfilesPath) || !Directory.Exists(settings.ProfilesPath))
+            {
+                return;
+            }
+
+            string[] shaderGlassProfiles = Directory.GetFiles(settings.ProfilesPath, "*.sgp", SearchOption.TopDirectoryOnly);
+            Tag[] currentProfileTags = PlayniteApi.Database.Tags.Where(t => t.Name.StartsWith("[ShaderGlass]", StringComparison.OrdinalIgnoreCase)).ToArray();
+            
+            // Ensure IgnoredProfiles list exists
+            if (settings.IgnoredProfiles == null)
+            {
+                settings.IgnoredProfiles = new List<string>();
+            }
+
+            // Create progress window
+            var progressWindow = PlayniteApi.Dialogs.CreateWindow(new Playnite.SDK.WindowCreationOptions
+            {
+                ShowMinimizeButton = false,
+                ShowMaximizeButton = false,
+                ShowCloseButton = false
+            });
+            var progressControl = new RefreshProfilesProgressWindow();
+            progressWindow.Content = progressControl;
+            progressWindow.Title = ResourceProvider.GetString("LOCShaderGlassRefreshingProfiles");
+            progressWindow.Height = 160;
+            progressWindow.Width = 400;
+            progressWindow.ResizeMode = System.Windows.ResizeMode.NoResize;
+            progressWindow.ShowInTaskbar = false;
+            progressWindow.Owner = PlayniteApi.Dialogs.GetCurrentAppWindow();
+            progressWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            progressWindow.Show();
+            
+            // Process all profiles in directory
+            int totalProfiles = shaderGlassProfiles.Length;
+            int currentIndex = 0;
+            int tagsAdded = 0;
+            int tagsRemoved = 0;
+            int ignoredCount = 0;
+            
+            foreach (string profile in shaderGlassProfiles)
+            {
+                currentIndex++;
+                string profileFileName = Path.GetFileName(profile);
+                string profileNameWithoutExtension = Path.GetFileNameWithoutExtension(profileFileName);
+                
+                // Update progress
+                progressControl.UpdateProgress(currentIndex, totalProfiles, 
+                    string.Format(ResourceProvider.GetString("LOCShaderGlassProcessingProfile"), profileNameWithoutExtension));
+                System.Windows.Forms.Application.DoEvents();
+                
+                // Check if profile is ignored
+                bool isIgnored = settings.IgnoredProfiles.Any(ignored => 
+                    string.Equals(ignored, profileFileName, StringComparison.OrdinalIgnoreCase));
+                
+                if (isIgnored)
+                {
+                    ignoredCount++;
+                }
+                
+                // Find existing tag for this profile
+                var existingTag = currentProfileTags.FirstOrDefault(t => 
+                    t.Name.Equals($"[ShaderGlass] {profileNameWithoutExtension}", StringComparison.OrdinalIgnoreCase));
+                
+                if (existingTag != null)
+                {
+                    // Tag exists - remove it if profile is ignored
+                    if (isIgnored)
+                    {
+                        PlayniteApi.Database.Tags.Remove(existingTag);
+                        tagsRemoved++;
+                        logger.Info($"Removed ShaderGlass tag for ignored profile: {existingTag.Name}");
+                    }
+                }
+                else
+                {
+                    // Tag doesn't exist - create it if profile is NOT ignored
+                    if (!isIgnored)
+                    {
+                        var newTag = new Tag
+                        {
+                            Name = $"[ShaderGlass] {profileNameWithoutExtension}"
+                        };
+                        PlayniteApi.Database.Tags.Add(newTag);
+                        tagsAdded++;
+                        logger.Info($"Created ShaderGlass tag for profile: {newTag.Name}");
+                    }
+                }
+            }
+
+            // Close progress window
+            progressWindow.Close();
+            
+            // Show notification with results
+            string notificationText = string.Format(ResourceProvider.GetString("LOCShaderGlassRefreshNotification"), 
+                tagsAdded, ignoredCount, totalProfiles);
+            PlayniteApi.Notifications.Add("ShaderGlassRefresh", notificationText, Playnite.SDK.NotificationType.Info);
+        }
+
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
             // Add code to be executed when Playnite is initialized.
+            RefreshProfiles();
         }
 
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
@@ -217,6 +315,22 @@ namespace ShaderGlass
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
             return new ShaderGlassSettingsView(this);
+        }
+
+        public override IEnumerable<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
+        {
+            return new List<MainMenuItem>
+            {
+                new MainMenuItem
+                {
+                    Description = ResourceProvider.GetString("LOCShaderGlassRefreshProfiles"),
+                    MenuSection = "@ShaderGlass",
+                    Action = (menuArgs) =>
+                    {
+                        RefreshProfiles();
+                    }
+                }
+            };
         }
     }
 }

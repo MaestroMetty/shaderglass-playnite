@@ -55,21 +55,27 @@ Ensure the following NuGet package is restored:
 
 ```
 ShaderGlass/
-├── src/                          # Source code directory
+├── Resources/                    # Source code and resources directory
 │   ├── ShaderGlass.cs           # Main plugin class
 │   ├── ShaderGlassSettings.cs   # Settings class
 │   ├── ShaderGlassSettingsView.xaml      # Settings UI (XAML)
 │   ├── ShaderGlassSettingsView.xaml.cs   # Settings UI code-behind
+│   ├── RefreshProfilesProgressWindow.xaml      # Progress window UI (XAML)
+│   ├── RefreshProfilesProgressWindow.xaml.cs   # Progress window code-behind
 │   ├── App.xaml                 # Application resources
-│   └── Properties/
-│       └── AssemblyInfo.cs      # Assembly metadata
+│   ├── icon.png                 # Plugin icon
+│   └── packages.config          # NuGet packages configuration
 ├── Localization/                 # Localization files
-│   └── en_US.xaml
+│   ├── en_US.xaml               # English localization
+│   └── it_IT.xaml               # Italian localization
+├── Properties/
+│   └── AssemblyInfo.cs          # Assembly metadata
 ├── extension.yaml                # Plugin metadata
-├── icon.png                      # Plugin icon
+├── manifest.yaml                 # Plugin manifest
+├── InstallerManifest.yaml        # Installer manifest
+├── NuGet.config                  # NuGet configuration
 ├── ShaderGlass.csproj           # Project file
 ├── ShaderGlass.sln              # Solution file
-├── packages.config               # NuGet packages configuration
 └── README.md                    # User documentation
 ```
 
@@ -84,8 +90,9 @@ ShaderGlass/
 3. The release files will be in `bin/Release/`:
    - `ShaderGlass.dll` - The compiled plugin
    - `extension.yaml` - Plugin metadata
-   - `icon.png` - Plugin icon
-   - `Localization/en_US.xaml` - Localization file
+   - `Resources/icon.png` - Plugin icon
+   - `Localization/en_US.xaml` - English localization file
+   - `Localization/it_IT.xaml` - Italian localization file
 
 ## Testing the Plugin
 

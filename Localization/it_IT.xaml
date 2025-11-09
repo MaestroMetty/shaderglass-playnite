@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Settings Labels -->
+    <sys:String x:Key="LOCShaderGlassBrowseButton">Sfoglia...</sys:String>
+    <sys:String x:Key="LOCShaderGlassExecutablePathLabel">Percorso dell'eseguibile di ShaderGlass:</sys:String>
+    <sys:String x:Key="LOCShaderGlassExecutablePathDescription">Percorso dell'eseguibile di ShaderGlass (\path\to\shaderglass\ShaderGlass.exe)</sys:String>
+    <sys:String x:Key="LOCShaderGlassProfilesPathLabel">Percorso della directory dei profili:</sys:String>
+    <sys:String x:Key="LOCShaderGlassProfilesPathDescription">Percorso della directory contenente i file dei profili di ShaderGlass (.sgp)</sys:String>
+
+    <!-- Dialog Titles -->
+    <sys:String x:Key="LOCShaderGlassSelectExecutableTitle">Seleziona l'eseguibile di ShaderGlass</sys:String>
+    <sys:String x:Key="LOCShaderGlassSelectProfilesTitle">Seleziona la directory dei profili (puoi digitare il percorso nella barra degli indirizzi)</sys:String>
+    <sys:String x:Key="LOCShaderGlassSelectFolder">Seleziona la directory</sys:String>
+
+    <!-- Error Messages -->
+    <sys:String x:Key="LOCShaderGlassExecutablePathRequired">Il percorso dell'eseguibile di ShaderGlass � obbligatorio.</sys:String>
+    <sys:String x:Key="LOCShaderGlassExecutablePathNotExist">Il percorso dell'eseguibile di ShaderGlass non esiste.</sys:String>
+    <sys:String x:Key="LOCShaderGlassExecutablePathMustBeExe">Il percorso dell'eseguibile di ShaderGlass deve includere l'estensione .exe.</sys:String>
+    <sys:String x:Key="LOCShaderGlassProfilesPathRequired">Il percorso della directory dei profili � obbligatorio.</sys:String>
+    <sys:String x:Key="LOCShaderGlassProfilesPathNotExist">Il percorso della directory dei profili non esiste.</sys:String>
+
+    <sys:String x:Key="LOCShaderGlassRefreshProfiles">Aggiorna i profili</sys:String>
+    <sys:String x:Key="LOCShaderGlassIgnoredProfilesLabel">Profili attivi:</sys:String>
+    <sys:String x:Key="LOCShaderGlassIgnoredProfilesDescription">Deseleziona i profili che vuoi ignorare. I profili ignorati non avranno tag creati automaticamente.</sys:String>
+    <sys:String x:Key="LOCShaderGlassRefreshingProfiles">ShaderGlass: Aggiornamento profili...</sys:String>
+    <sys:String x:Key="LOCShaderGlassProcessingProfile">Elaborazione: {0}</sys:String>
+    <sys:String x:Key="LOCShaderGlassRefreshNotification">ShaderGlass: {0} tag creati, {1} profilo/i ignorati su {2} totali.</sys:String>
+
+</ResourceDictionary>

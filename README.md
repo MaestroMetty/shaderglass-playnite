@@ -7,15 +7,28 @@ A Playnite plugin that automatically launches [ShaderGlass](https://github.com/m
 ## Features
 
 - Automatically launches ShaderGlass when games with ShaderGlass tags are started
+- **Automatic tag creation**: Tags are automatically created based on profiles found in your profiles directory
 - Supports custom profile selection via game tags
 - Configurable ShaderGlass executable path and profiles directory
+- Option to ignore specific profiles from tag creation
+- Easy profile refresh from Playnite menu
 - Automatic cleanup when games are stopped
 
 ## Installation
 
-You can download the plugin from the [releases page](https://github.com/MaestroMetty/shaderglass-playnite/releases). There are two ways to install it:
+You can install the plugin in several ways:
 
-### Using the *.pext file (Recommended):
+### From Playnite Extension Library (Easiest):
+
+1. Open Playnite
+2. Go to **Add-ons** → **Browse** (or **Settings** → **Add-ons** → **Browse**)
+3. Search for "shaderglass" in the extension library
+4. Click **Install** on the Shader Glass plugin
+5. Configure the plugin in Playnite Settings → Extensions → Shader Glass
+
+### Using the *.pext file:
+
+You can also download the plugin from the [releases page](https://github.com/MaestroMetty/shaderglass-playnite/releases):
 
 1. Download `shader-glass-playniteplugin-v*.pext` from the releases page
 2. Drag and drop the `.pext` file into Playnite
@@ -40,10 +53,26 @@ You can download the plugin from the [releases page](https://github.com/MaestroM
 
 2. **Profiles Directory Path**: Path to the directory containing ShaderGlass profile files (.sgp files)
    - Example: `C:\Users\YourName\AppData\Roaming\ShaderGlass\Profiles`
+   - The plugin automatically scans this directory and creates tags for each profile found
+
+3. **Ignored Profiles**: List of profile names (without .sgp extension) that should be excluded from automatic tag creation
+   - Profiles listed here will not have tags created automatically
+   - Useful for hiding profiles you don't want to use
+
+### Refreshing Profiles
+
+To refresh the list of available profiles and update the automatically created tags:
+
+1. Go to **Extensions** → **Shader Glass** → **Refresh Profiles** in the Playnite menu, or use the refresh button in the extension settings page
+2. The plugin will scan your profiles directory and create/update tags accordingly
+3. Any new profiles will have tags created automatically
+4. Profiles in the ignored list will be skipped
 
 ### Game Tags
 
-Tag your games with ShaderGlass tags to enable automatic shader injection:
+The plugin automatically creates tags for each profile found in your profiles directory. Simply tag your games with these automatically created tags to enable automatic shader injection:
+
+**Note**: Tags are automatically created based on profiles in your profiles directory. You can refresh the profile list from **Extensions** → **Shader Glass** → **Refresh Profiles** in the Playnite menu or from the extension settings page.
 
 - **`[ShaderGlass] <profile-name>`**: Launches ShaderGlass with the specified profile in fullscreen mode
   - Example: `[ShaderGlass] CRT-Royale` will launch with `ShaderGlass.exe -f "CRT-Royale.sgp"`

@@ -54,6 +54,9 @@
     <Compile Include="Resources\ShaderGlassSettingsView.xaml.cs">
       <DependentUpon>ShaderGlassSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\RefreshProfilesProgressWindow.xaml.cs">
+      <DependentUpon>RefreshProfilesProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +66,12 @@
     <None Include="Resources\packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localization\*.xaml">
+    <None Include="Localization\en_US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\it_IT.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -73,6 +81,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\ShaderGlassSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\RefreshProfilesProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

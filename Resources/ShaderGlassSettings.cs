@@ -35,6 +35,13 @@ namespace ShaderGlass
             set { profilesPath = value; NotifyPropertyChanged("ProfilesPath"); } 
         }
 
+        private List<string> ignoredProfiles = new List<string>();
+        public List<string> IgnoredProfiles 
+        { 
+            get { return ignoredProfiles; } 
+            set { ignoredProfiles = value ?? new List<string>(); NotifyPropertyChanged("IgnoredProfiles"); } 
+        }
+
         // Parameterless constructor must exist if you want to use LoadPluginSettings method.
         public ShaderGlassSettings()
         {
@@ -62,6 +69,10 @@ namespace ShaderGlass
                 if (savedSettings.ProfilesPath != null)
                 {
                     ProfilesPath = savedSettings.ProfilesPath;
+                }
+                if (savedSettings.IgnoredProfiles != null)
+                {
+                    IgnoredProfiles = savedSettings.IgnoredProfiles;
                 }
             }
         }

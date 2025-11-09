@@ -1,0 +1,14 @@
+<UserControl x:Class="ShaderGlass.RefreshProfilesProgressWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock x:Name="StatusText" Text="{DynamicResource LOCShaderGlassRefreshingProfiles}" 
+                       Margin="0,0,0,10" TextWrapping="Wrap" Foreground="White"/>
+            <ProgressBar x:Name="ProgressBar" Height="20" Minimum="0" Maximum="100" Value="0" Margin="0,0,0,8"/>
+            <TextBlock x:Name="ProgressText" Text="0%" 
+                       HorizontalAlignment="Right" Margin="0,0,0,0" FontSize="12" Foreground="White" Height="18" VerticalAlignment="Top"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
+

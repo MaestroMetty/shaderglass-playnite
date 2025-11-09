@@ -29,7 +29,19 @@
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Text="{Binding ProfilesPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0"/>
                 <Button Grid.Column="1" Content="{DynamicResource LOCShaderGlassBrowseButton}" Click="BrowseProfilesButton_Click" Padding="10,5"/>
-            </Grid>
+            </Grid>            
+
+            <!-- Ignored Profiles -->
+            <TextBlock Text="{DynamicResource LOCShaderGlassIgnoredProfilesLabel}" FontWeight="Bold" Margin="0,15,0,5"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassIgnoredProfilesDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
+            <ListBox ItemsSource="{Binding ProfileItems, RelativeSource={RelativeSource AncestorType=UserControl}}" MaxHeight="200" Margin="0,0,0,15">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding ProfileName}" IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Content="{DynamicResource LOCShaderGlassRefreshProfiles}" Click="RefreshProfilesButton_Click" Padding="10,5" Margin="0,15,0,15"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

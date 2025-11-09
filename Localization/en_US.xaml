@@ -22,4 +22,11 @@
     <sys:String x:Key="LOCShaderGlassProfilesPathRequired">Profiles directory path is required.</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathNotExist">Profiles directory path does not exist.</sys:String>
 
+    <sys:String x:Key="LOCShaderGlassRefreshProfiles">Refresh Profiles</sys:String>
+    <sys:String x:Key="LOCShaderGlassIgnoredProfilesLabel">Active Profiles:</sys:String>
+    <sys:String x:Key="LOCShaderGlassIgnoredProfilesDescription">Uncheck profiles you want to ignore. Ignored profiles will not have tags created automatically.</sys:String>
+    <sys:String x:Key="LOCShaderGlassRefreshingProfiles">ShaderGlass: Refreshing profiles...</sys:String>
+    <sys:String x:Key="LOCShaderGlassProcessingProfile">Processing: {0}</sys:String>
+    <sys:String x:Key="LOCShaderGlassRefreshNotification">ShaderGlass: {0} tag(s) added, {1} profile(s) ignored out of {2} total.</sys:String>
+
 </ResourceDictionary>
