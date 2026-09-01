@@ -42,6 +42,15 @@ namespace ShaderGlass
             set { ignoredProfiles = value ?? new List<string>(); NotifyPropertyChanged("IgnoredProfiles"); } 
         }
 
+        private int launchDelaySeconds = 3;
+        public int LaunchDelaySeconds
+        {
+            get { return launchDelaySeconds; }
+            set { launchDelaySeconds = value; NotifyPropertyChanged("LaunchDelaySeconds"); }
+        }
+
+        public int SettingsVersion { get; set; } = 2;
+
         // Parameterless constructor must exist if you want to use LoadPluginSettings method.
         public ShaderGlassSettings()
         {
@@ -74,6 +83,17 @@ namespace ShaderGlass
                 {
                     IgnoredProfiles = savedSettings.IgnoredProfiles;
                 }
+
+                if (savedSettings.SettingsVersion < 2)
+                {
+                    LaunchDelaySeconds = 3;
+                }
+                else
+                {
+                    LaunchDelaySeconds = savedSettings.LaunchDelaySeconds;
+                }
+
+                SettingsVersion = 2;
             }
         }
 
@@ -123,6 +143,11 @@ namespace ShaderGlass
             else if (!Directory.Exists(ProfilesPath))
             {
                 errors.Add(ResourceProvider.GetString("LOCShaderGlassProfilesPathNotExist"));
+            }
+
+            if (LaunchDelaySeconds < 0 || LaunchDelaySeconds > 60)
+            {
+                errors.Add(ResourceProvider.GetString("LOCShaderGlassLaunchDelayInvalid"));
             }
 
             return errors.Count == 0;

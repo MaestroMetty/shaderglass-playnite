@@ -9,6 +9,8 @@
     <sys:String x:Key="LOCShaderGlassExecutablePathDescription">Path to the ShaderGlass executable file (\path\to\shaderglass\ShaderGlass.exe)</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathLabel">Profiles Directory Path:</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathDescription">Path to the directory containing ShaderGlass profile files (.sgp files)</sys:String>
+    <sys:String x:Key="LOCShaderGlassLaunchDelayLabel">Launch Delay (seconds):</sys:String>
+    <sys:String x:Key="LOCShaderGlassLaunchDelayDescription">Seconds to wait after the game starts before launching ShaderGlass. Increase this if ShaderGlass shows a black screen because the game window is not ready yet. Set to 0 to launch immediately.</sys:String>
 
     <!-- Dialog Titles -->
     <sys:String x:Key="LOCShaderGlassSelectExecutableTitle">Select ShaderGlass executable</sys:String>
@@ -21,6 +23,7 @@
     <sys:String x:Key="LOCShaderGlassExecutablePathMustBeExe">ShaderGlass executable path must include the .exe file extension.</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathRequired">Profiles directory path is required.</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathNotExist">Profiles directory path does not exist.</sys:String>
+    <sys:String x:Key="LOCShaderGlassLaunchDelayInvalid">Launch delay must be between 0 and 60 seconds.</sys:String>
 
     <sys:String x:Key="LOCShaderGlassRefreshProfiles">Refresh Profiles</sys:String>
     <sys:String x:Key="LOCShaderGlassIgnoredProfilesLabel">Active Profiles:</sys:String>

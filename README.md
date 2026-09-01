@@ -10,6 +10,7 @@ A Playnite plugin that automatically launches [ShaderGlass](https://github.com/m
 - **Automatic tag creation**: Tags are automatically created based on profiles found in your profiles directory
 - Supports custom profile selection via game tags
 - Configurable ShaderGlass executable path and profiles directory
+- Configurable launch delay (useful for profiles that target a specific game window)
 - Option to ignore specific profiles from tag creation
 - Easy profile refresh from Playnite menu
 - Automatic cleanup when games are stopped
@@ -55,7 +56,13 @@ You can also download the plugin from the [releases page](https://github.com/Mae
    - Example: `C:\Users\YourName\AppData\Roaming\ShaderGlass\Profiles`
    - The plugin automatically scans this directory and creates tags for each profile found
 
-3. **Ignored Profiles**: List of profile names (without .sgp extension) that should be excluded from automatic tag creation
+3. **Launch Delay (seconds)**: How long to wait after the game starts before launching ShaderGlass (default: 3 seconds)
+   - Set to `0` to launch ShaderGlass immediately
+   - Increase this value if ShaderGlass shows a black screen on launch
+   - Especially useful for profiles configured in ShaderGlass with **Input → Window**, where ShaderGlass must find the game window before it can capture it; if ShaderGlass starts too early, the window may not exist yet and capture will fail
+   - The delay needed can vary by game and system — try 3 seconds first, then increase if needed (up to 60 seconds)
+
+4. **Ignored Profiles**: List of profile names (without .sgp extension) that should be excluded from automatic tag creation
    - Profiles listed here will not have tags created automatically
    - Useful for hiding profiles you don't want to use
 
@@ -95,7 +102,7 @@ The plugin automatically creates tags for each profile found in your profiles di
 
 1. When a game is started, the plugin checks if it has any `[ShaderGlass]` tags
 2. If a profile name tag is found, it constructs the full path to the profile file
-3. ShaderGlass is launched with the appropriate arguments:
+3. After the configured launch delay (if any), ShaderGlass is launched with the appropriate arguments:
    - With `-f` flag if no `NoFullscreen` tag is present
    - Without `-f` flag if `NoFullscreen` tag is present
    - With `-p` flag if `PausedMode` tag is present (⚠️ can cause weird behavior)

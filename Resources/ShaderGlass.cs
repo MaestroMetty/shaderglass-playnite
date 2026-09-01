@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -21,6 +22,7 @@ namespace ShaderGlass
 
         // Track ShaderGlass processes per game
         private Dictionary<Guid, Process> shaderGlassProcesses = new Dictionary<Guid, Process>();
+        private Dictionary<Guid, CancellationTokenSource> pendingLaunches = new Dictionary<Guid, CancellationTokenSource>();
 
         public override Guid Id { get; } = Guid.Parse("b3ea67cd-a2e7-4f91-88c4-8486e31fc900");
 
@@ -108,6 +110,13 @@ namespace ShaderGlass
 
         public override void OnGameStopped(OnGameStoppedEventArgs args)
         {
+            if (pendingLaunches.ContainsKey(args.Game.Id))
+            {
+                pendingLaunches[args.Game.Id].Cancel();
+                pendingLaunches[args.Game.Id].Dispose();
+                pendingLaunches.Remove(args.Game.Id);
+            }
+
             // Close ShaderGlass process if it was started for this game
             if (shaderGlassProcesses.ContainsKey(args.Game.Id))
             {
@@ -137,52 +146,84 @@ namespace ShaderGlass
 
         private void LaunchShaderGlass(Guid gameId, string profileName, bool noFullscreen, bool pausedMode)
         {
-            try
+            var cts = new CancellationTokenSource();
+            pendingLaunches[gameId] = cts;
+
+            Task.Run(async () =>
             {
-                // Ensure profile name has .sgp extension
-                if (!profileName.EndsWith(".sgp", StringComparison.OrdinalIgnoreCase))
+                try
                 {
-                    profileName = profileName + ".sgp";
-                }
+                    var delaySeconds = settings.LaunchDelaySeconds;
+                    if (delaySeconds > 0)
+                    {
+                        logger.Info($"Waiting {delaySeconds} second(s) before launching ShaderGlass for game {gameId}");
+                        await Task.Delay(delaySeconds * 1000, cts.Token);
+                    }
 
-                // Construct full path to profile file
-                var profilePath = Path.Combine(settings.ProfilesPath, profileName);
-                
-                // Validate profile file exists
-                if (!File.Exists(profilePath))
-                {
-                    logger.Warn($"ShaderGlass profile file not found: {profilePath}");
-                    return;
-                }
+                    if (cts.IsCancellationRequested)
+                    {
+                        return;
+                    }
 
-                var executablePath = settings.ExecutablePath;
-                var executableDir = Path.GetDirectoryName(executablePath);
-                var arguments = noFullscreen ? $"\"{profilePath}\"" : $"-f \"{profilePath}\"";
-                if (pausedMode)
-                {
-                    arguments += " -p";
+                    StartShaderGlassProcess(gameId, profileName, noFullscreen, pausedMode);
                 }
-
-                var startInfo = new ProcessStartInfo
+                catch (OperationCanceledException)
                 {
-                    FileName = executablePath,
-                    Arguments = arguments,
-                    WorkingDirectory = executableDir,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                //TO-DO: Check if adding delay when its paused fixes weird behavior
-                var process = Process.Start(startInfo);
-                if (process != null)
-                {
-                    shaderGlassProcesses[gameId] = process;
-                    logger.Info($"Launched ShaderGlass for game {gameId} with profile {profilePath} (NoFullscreen: {noFullscreen}) (PausedMode: {pausedMode})");
+                    logger.Info($"Cancelled ShaderGlass launch for game {gameId}");
                 }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Error launching ShaderGlass for game {gameId} with profile {profileName}");
+                }
+                finally
+                {
+                    if (pendingLaunches.ContainsKey(gameId) && pendingLaunches[gameId] == cts)
+                    {
+                        pendingLaunches.Remove(gameId);
+                    }
+                    cts.Dispose();
+                }
+            });
+        }
+
+        private void StartShaderGlassProcess(Guid gameId, string profileName, bool noFullscreen, bool pausedMode)
+        {
+            // Ensure profile name has .sgp extension
+            if (!profileName.EndsWith(".sgp", StringComparison.OrdinalIgnoreCase))
+            {
+                profileName = profileName + ".sgp";
             }
-            catch (Exception ex)
+
+            var profilePath = Path.Combine(settings.ProfilesPath, profileName);
+
+            if (!File.Exists(profilePath))
             {
-                logger.Error(ex, $"Error launching ShaderGlass for game {gameId} with profile {profileName}");
+                logger.Warn($"ShaderGlass profile file not found: {profilePath}");
+                return;
+            }
+
+            var executablePath = settings.ExecutablePath;
+            var executableDir = Path.GetDirectoryName(executablePath);
+            var arguments = noFullscreen ? $"\"{profilePath}\"" : $"-f \"{profilePath}\"";
+            if (pausedMode)
+            {
+                arguments += " -p";
+            }
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = executablePath,
+                Arguments = arguments,
+                WorkingDirectory = executableDir,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            var process = Process.Start(startInfo);
+            if (process != null)
+            {
+                shaderGlassProcesses[gameId] = process;
+                logger.Info($"Launched ShaderGlass for game {gameId} with profile {profilePath} (NoFullscreen: {noFullscreen}) (PausedMode: {pausedMode})");
             }
         }
 

@@ -1,6 +1,12 @@
 AddonId: ShaderGlass_b3ea67cd-a2e7-4f91-88c4-8486e31fc900
 
 Packages:
+  - Version: 1.2.0
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2026-09-01
+    PackageUrl: https://github.com/MaestroMetty/shaderglass-playnite/raw/refs/heads/main/Releases/shader-glass-playniteplugin-v1.2.0.pext
+    Changelog:
+      - Added configurable launch delay setting (useful for profiles that target a specific game window)
   - Version: 1.1.0
     RequiredApiVersion: 6.2.0
     ReleaseDate: 2025-11-09
