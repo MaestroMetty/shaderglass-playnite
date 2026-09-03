@@ -11,6 +11,8 @@ A Playnite plugin that automatically launches [ShaderGlass](https://github.com/m
 - Supports custom profile selection via game tags
 - Configurable ShaderGlass executable path and profiles directory
 - Configurable launch delay (useful for profiles that target a specific game window)
+- Choose whether games launch ShaderGlass with that delay by default, or immediately
+- Per-game delay overrides via `[ShaderGlass] ForceLaunchWithDelay` and `[ShaderGlass] ForceLaunchWithNoDelay` tags
 - Option to ignore specific profiles from tag creation
 - Easy profile refresh from Playnite menu
 - Automatic cleanup when games are stopped
@@ -56,13 +58,16 @@ You can also download the plugin from the [releases page](https://github.com/Mae
    - Example: `C:\Users\YourName\AppData\Roaming\ShaderGlass\Profiles`
    - The plugin automatically scans this directory and creates tags for each profile found
 
-3. **Launch Delay (seconds)**: How long to wait after the game starts before launching ShaderGlass (default: 3 seconds)
-   - Set to `0` to launch ShaderGlass immediately
+3. **Launch Delay (seconds)**: How long to wait after the game starts before launching ShaderGlass when a delay is applied (default: 3 seconds)
    - Increase this value if ShaderGlass shows a black screen on launch
    - Especially useful for profiles configured in ShaderGlass with **Input → Window**, where ShaderGlass must find the game window before it can capture it; if ShaderGlass starts too early, the window may not exist yet and capture will fail
    - The delay needed can vary by game and system — try 3 seconds first, then increase if needed (up to 60 seconds)
 
-4. **Ignored Profiles**: List of profile names (without .sgp extension) that should be excluded from automatic tag creation
+4. **Automatic launch timing**: Default for all games (can be overridden per game with tags)
+   - **Automatically launch games with delay** (default): waits the configured delay before launching ShaderGlass
+   - **Automatically launch games without delay**: launches ShaderGlass immediately
+
+5. **Ignored Profiles**: List of profile names (without .sgp extension) that should be excluded from automatic tag creation
    - Profiles listed here will not have tags created automatically
    - Useful for hiding profiles you don't want to use
 
@@ -91,22 +96,37 @@ The plugin automatically creates tags for each profile found in your profiles di
   - ⚠️ **Warning**: PausedMode can lead to weird behavior in some games. Use with caution.
   - Example: If a game has both `[ShaderGlass] CRT-Royale` and `[ShaderGlass] PausedMode`, it will launch with `ShaderGlass.exe -f "CRT-Royale.sgp" -p`
 
+- **`[ShaderGlass] ForceLaunchWithDelay`**: Overrides the default and waits the configured delay before launching ShaderGlass
+  - Used when **Automatically launch games without delay** is selected
+  - Has no effect if delay is already the default
+
+- **`[ShaderGlass] ForceLaunchWithNoDelay`**: Overrides the default and launches ShaderGlass immediately
+  - Used when **Automatically launch games with delay** is selected
+  - Has no effect if launching without delay is already the default
+
+These two override tags are created automatically when profiles are refreshed.
+
 ### Tag Examples
 
 - Game with fullscreen shader: Add tag `[ShaderGlass] MyProfile`
 - Game with windowed shader: Add tags `[ShaderGlass] MyProfile` and `[ShaderGlass] NoFullscreen`
 - Game with paused mode: Add tags `[ShaderGlass] MyProfile` and `[ShaderGlass] PausedMode`
 - Game with windowed paused mode: Add tags `[ShaderGlass] MyProfile`, `[ShaderGlass] NoFullscreen`, and `[ShaderGlass] PausedMode`
+- Game that should skip the delay (when delay is the default): Add tags `[ShaderGlass] MyProfile` and `[ShaderGlass] ForceLaunchWithNoDelay`
+- Game that should wait (when launching without delay is the default): Add tags `[ShaderGlass] MyProfile` and `[ShaderGlass] ForceLaunchWithDelay`
 
 ## How It Works
 
 1. When a game is started, the plugin checks if it has any `[ShaderGlass]` tags
 2. If a profile name tag is found, it constructs the full path to the profile file
-3. After the configured launch delay (if any), ShaderGlass is launched with the appropriate arguments:
+3. Launch timing is decided from the settings default, then per-game override tags:
+   - Default **with delay**: wait the configured seconds, unless the game has `[ShaderGlass] ForceLaunchWithNoDelay`
+   - Default **without delay**: launch immediately, unless the game has `[ShaderGlass] ForceLaunchWithDelay`
+4. ShaderGlass is launched with the appropriate arguments:
    - With `-f` flag if no `NoFullscreen` tag is present
    - Without `-f` flag if `NoFullscreen` tag is present
    - With `-p` flag if `PausedMode` tag is present (⚠️ can cause weird behavior)
-4. When the game stops, ShaderGlass is automatically closed
+5. When the game stops, ShaderGlass is automatically closed
 
 ## Requirements
 

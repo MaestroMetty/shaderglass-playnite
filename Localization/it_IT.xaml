@@ -10,7 +10,14 @@
     <sys:String x:Key="LOCShaderGlassProfilesPathLabel">Percorso della directory dei profili:</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathDescription">Percorso della directory contenente i file dei profili di ShaderGlass (.sgp)</sys:String>
     <sys:String x:Key="LOCShaderGlassLaunchDelayLabel">Ritardo di avvio (secondi):</sys:String>
-    <sys:String x:Key="LOCShaderGlassLaunchDelayDescription">Secondi di attesa dopo l'avvio del gioco prima di lanciare ShaderGlass. Aumenta questo valore se ShaderGlass mostra una schermata nera perché la finestra del gioco non è ancora pronta. Imposta a 0 per avviare immediatamente.</sys:String>
+    <sys:String x:Key="LOCShaderGlassLaunchDelayDescription">Secondi di attesa dopo l'avvio del gioco prima di lanciare ShaderGlass quando viene applicato un ritardo. Aumenta questo valore se ShaderGlass mostra una schermata nera perché la finestra del gioco non è ancora pronta.</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchDelayModeLabel">Tempistica di avvio automatico:</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchDelayModeDescription">Impostazione predefinita per tutti i giochi. Puoi sovrascriverla sul singolo gioco con i tag [ShaderGlass] ForceLaunchWithNoDelay o [ShaderGlass] ForceLaunchWithDelay.</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchWithDelay">Avvia automaticamente i giochi con ritardo</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchWithoutDelay">Avvia automaticamente i giochi senza ritardo</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsLabel">Notifiche:</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsDescription">Mostra una notifica di Playnite dopo l'aggiornamento dei profili, anche all'avvio di Playnite.</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsCheckbox">Mostra le notifiche</sys:String>
 
     <!-- Dialog Titles -->
     <sys:String x:Key="LOCShaderGlassSelectExecutableTitle">Seleziona l'eseguibile di ShaderGlass</sys:String>

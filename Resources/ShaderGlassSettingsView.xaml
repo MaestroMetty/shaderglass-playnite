@@ -36,6 +36,17 @@
             <TextBlock Text="{DynamicResource LOCShaderGlassLaunchDelayDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
             <TextBox Text="{Binding LaunchDelaySeconds, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,15" Width="80" HorizontalAlignment="Left"/>
 
+            <!-- Launch delay mode -->
+            <TextBlock Text="{DynamicResource LOCShaderGlassAutoLaunchDelayModeLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassAutoLaunchDelayModeDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
+            <RadioButton Content="{DynamicResource LOCShaderGlassAutoLaunchWithDelay}" IsChecked="{Binding AutoLaunchWithDelay}" Margin="0,0,0,5"/>
+            <RadioButton Content="{DynamicResource LOCShaderGlassAutoLaunchWithoutDelay}" IsChecked="{Binding AutoLaunchWithoutDelay}" Margin="0,0,0,15"/>
+
+            <!-- Notifications -->
+            <TextBlock Text="{DynamicResource LOCShaderGlassShowNotificationsLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="{DynamicResource LOCShaderGlassShowNotificationsDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>
+            <CheckBox Content="{DynamicResource LOCShaderGlassShowNotificationsCheckbox}" IsChecked="{Binding ShowNotifications}" Margin="0,0,0,15"/>
+
             <!-- Ignored Profiles -->
             <TextBlock Text="{DynamicResource LOCShaderGlassIgnoredProfilesLabel}" FontWeight="Bold" Margin="0,15,0,5"/>
             <TextBlock Text="{DynamicResource LOCShaderGlassIgnoredProfilesDescription}" TextWrapping="Wrap" Margin="0,0,0,5" Foreground="Gray"/>

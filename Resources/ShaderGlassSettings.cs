@@ -49,7 +49,35 @@ namespace ShaderGlass
             set { launchDelaySeconds = value; NotifyPropertyChanged("LaunchDelaySeconds"); }
         }
 
-        public int SettingsVersion { get; set; } = 2;
+        private bool autoLaunchWithDelay = true;
+        public bool AutoLaunchWithDelay
+        {
+            get { return autoLaunchWithDelay; }
+            set
+            {
+                if (autoLaunchWithDelay != value)
+                {
+                    autoLaunchWithDelay = value;
+                    NotifyPropertyChanged("AutoLaunchWithDelay");
+                    NotifyPropertyChanged("AutoLaunchWithoutDelay");
+                }
+            }
+        }
+
+        public bool AutoLaunchWithoutDelay
+        {
+            get { return !autoLaunchWithDelay; }
+            set { AutoLaunchWithDelay = !value; }
+        }
+
+        private bool showNotifications = false;
+        public bool ShowNotifications
+        {
+            get { return showNotifications; }
+            set { showNotifications = value; NotifyPropertyChanged("ShowNotifications"); }
+        }
+
+        public int SettingsVersion { get; set; } = 3;
 
         // Parameterless constructor must exist if you want to use LoadPluginSettings method.
         public ShaderGlassSettings()
@@ -93,7 +121,18 @@ namespace ShaderGlass
                     LaunchDelaySeconds = savedSettings.LaunchDelaySeconds;
                 }
 
-                SettingsVersion = 2;
+                if (savedSettings.SettingsVersion < 3)
+                {
+                    AutoLaunchWithDelay = true;
+                }
+                else
+                {
+                    AutoLaunchWithDelay = savedSettings.AutoLaunchWithDelay;
+                }
+
+                ShowNotifications = savedSettings.ShowNotifications;
+
+                SettingsVersion = 3;
             }
         }
 

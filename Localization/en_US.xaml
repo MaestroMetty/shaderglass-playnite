@@ -10,7 +10,14 @@
     <sys:String x:Key="LOCShaderGlassProfilesPathLabel">Profiles Directory Path:</sys:String>
     <sys:String x:Key="LOCShaderGlassProfilesPathDescription">Path to the directory containing ShaderGlass profile files (.sgp files)</sys:String>
     <sys:String x:Key="LOCShaderGlassLaunchDelayLabel">Launch Delay (seconds):</sys:String>
-    <sys:String x:Key="LOCShaderGlassLaunchDelayDescription">Seconds to wait after the game starts before launching ShaderGlass. Increase this if ShaderGlass shows a black screen because the game window is not ready yet. Set to 0 to launch immediately.</sys:String>
+    <sys:String x:Key="LOCShaderGlassLaunchDelayDescription">Seconds to wait after the game starts before launching ShaderGlass when a delay is applied. Increase this if ShaderGlass shows a black screen because the game window is not ready yet.</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchDelayModeLabel">Automatic launch timing:</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchDelayModeDescription">Default for all games. Override per game with tags [ShaderGlass] ForceLaunchWithNoDelay or [ShaderGlass] ForceLaunchWithDelay.</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchWithDelay">Automatically launch games with delay</sys:String>
+    <sys:String x:Key="LOCShaderGlassAutoLaunchWithoutDelay">Automatically launch games without delay</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsLabel">Notifications:</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsDescription">Show a Playnite notification after profiles are refreshed, including when Playnite starts.</sys:String>
+    <sys:String x:Key="LOCShaderGlassShowNotificationsCheckbox">Show notifications</sys:String>
 
     <!-- Dialog Titles -->
     <sys:String x:Key="LOCShaderGlassSelectExecutableTitle">Select ShaderGlass executable</sys:String>

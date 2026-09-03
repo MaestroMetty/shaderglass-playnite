@@ -73,14 +73,16 @@ namespace ShaderGlass
             bool hasProfileSet = false;
             bool noFullscreen = false;
             bool pausedMode = false;
+            bool forceLaunchWithDelay = false;
+            bool forceLaunchWithNoDelay = false;
 
             foreach (var tag in gameTags)
             {
                 if (tag.Name.StartsWith("[ShaderGlass]", StringComparison.OrdinalIgnoreCase))
                 {
                     // Extract content from tag
-                    // Format: "[ShaderGlass] <profile-name>", "[ShaderGlass] NoFullscreen", or "[ShaderGlass] PausedMode"
-                    // Since we already checked it starts with "[ShaderGlass]", just remove the prefix
+                    // Format: "[ShaderGlass] <profile-name>", "[ShaderGlass] NoFullscreen", "[ShaderGlass] PausedMode",
+                    // "[ShaderGlass] ForceLaunchWithDelay", or "[ShaderGlass] ForceLaunchWithNoDelay"
                     string content = tag.Name.Substring("[ShaderGlass] ".Length).Trim();
                     
                     if (content.Equals("NoFullscreen", StringComparison.OrdinalIgnoreCase))
@@ -91,7 +93,15 @@ namespace ShaderGlass
                     {
                         pausedMode = true;
                     }
-                    else if (string.IsNullOrWhiteSpace(profileName) &&!hasProfileSet)
+                    else if (content.Equals("ForceLaunchWithDelay", StringComparison.OrdinalIgnoreCase))
+                    {
+                        forceLaunchWithDelay = true;
+                    }
+                    else if (content.Equals("ForceLaunchWithNoDelay", StringComparison.OrdinalIgnoreCase))
+                    {
+                        forceLaunchWithNoDelay = true;
+                    }
+                    else if (string.IsNullOrWhiteSpace(profileName) && !hasProfileSet)
                     {
                         // Use first profile name found (skip subsequent profile tags if user incorrectly sets multiple)
                         profileName = content;
@@ -104,7 +114,10 @@ namespace ShaderGlass
             // Note: NoFullscreen tag can exist alone if there's another tag with profile name
             if (!string.IsNullOrWhiteSpace(profileName))
             {
-                LaunchShaderGlass(args.Game.Id, profileName, noFullscreen, pausedMode);
+                bool applyDelay = settings.AutoLaunchWithDelay
+                    ? !forceLaunchWithNoDelay
+                    : forceLaunchWithDelay;
+                LaunchShaderGlass(args.Game.Id, profileName, noFullscreen, pausedMode, applyDelay);
             }
         }
 
@@ -144,7 +157,7 @@ namespace ShaderGlass
             }
         }
 
-        private void LaunchShaderGlass(Guid gameId, string profileName, bool noFullscreen, bool pausedMode)
+        private void LaunchShaderGlass(Guid gameId, string profileName, bool noFullscreen, bool pausedMode, bool applyDelay)
         {
             var cts = new CancellationTokenSource();
             pendingLaunches[gameId] = cts;
@@ -153,7 +166,7 @@ namespace ShaderGlass
             {
                 try
                 {
-                    var delaySeconds = settings.LaunchDelaySeconds;
+                    var delaySeconds = applyDelay ? settings.LaunchDelaySeconds : 0;
                     if (delaySeconds > 0)
                     {
                         logger.Info($"Waiting {delaySeconds} second(s) before launching ShaderGlass for game {gameId}");
@@ -232,8 +245,30 @@ namespace ShaderGlass
             // Add code to be executed when game is uninstalled.
         }
 
+        private void EnsureSpecialTags()
+        {
+            string[] specialTags =
+            {
+                "[ShaderGlass] ForceLaunchWithDelay",
+                "[ShaderGlass] ForceLaunchWithNoDelay"
+            };
+
+            foreach (var tagName in specialTags)
+            {
+                bool exists = PlayniteApi.Database.Tags.Any(t =>
+                    t.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase));
+                if (!exists)
+                {
+                    PlayniteApi.Database.Tags.Add(new Tag { Name = tagName });
+                    logger.Info($"Created ShaderGlass tag: {tagName}");
+                }
+            }
+        }
+
         public void RefreshProfiles()
         {
+            EnsureSpecialTags();
+
             if (string.IsNullOrWhiteSpace(settings.ProfilesPath) || !Directory.Exists(settings.ProfilesPath))
             {
                 return;
@@ -326,10 +361,12 @@ namespace ShaderGlass
             // Close progress window
             progressWindow.Close();
             
-            // Show notification with results
-            string notificationText = string.Format(ResourceProvider.GetString("LOCShaderGlassRefreshNotification"), 
-                tagsAdded, ignoredCount, totalProfiles);
-            PlayniteApi.Notifications.Add("ShaderGlassRefresh", notificationText, Playnite.SDK.NotificationType.Info);
+            if (settings.ShowNotifications)
+            {
+                string notificationText = string.Format(ResourceProvider.GetString("LOCShaderGlassRefreshNotification"),
+                    tagsAdded, ignoredCount, totalProfiles);
+                PlayniteApi.Notifications.Add("ShaderGlassRefresh", notificationText, Playnite.SDK.NotificationType.Info);
+            }
         }
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
